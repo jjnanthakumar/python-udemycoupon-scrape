@@ -8,13 +8,6 @@ from collections import OrderedDict
 SCRAPING_URLS = ["https://techietweets.com/category/100-free-courses/",
                  "https://udemycoupon.learnviral.com/coupon-category/free100-discount/"]
 
-CLIENT_ID = "XGrj8erkqNey7u8KSGLnUoFYSTZhiLycFTCA1ND7"
-CLIENT_SECRET = "QCLFjzPag6bJiJrBmUSGLKPvYdr8mEz9knf5R2cLgsikBlYGcJRyUkymM3GtORBxavnqXzgfVWDIIQAf2kSG3CppSVC0DaNR8Z1HTTbOXxbbnAWkfuYrVVVS2ynsp312"
-AUTH_HEADER = {
-  "Accept": "application/json, text/plain, */*",
-  "Authorization": "Basic WEdyajhlcmtxTmV5N3U4S1NHTG5Vb0ZZU1RaaGlMeWNGVENBMU5ENzpRQ0xGanpQYWc2YkppSnJCbVVTR0xLUHZZZHI4bUV6OWtuZjVSMmNMZ3Npa0JsWUdjSlJ5VWt5bU0zR3RPUkJ4YXZucVh6Z2ZWV0RJSVFBZjJrU0czQ3BwU1ZDMERhTlI4WjFIVFRiT1h4YmJuQVdrZnVZclZWVlMyeW5zcDMxMg==",
-  "Content-Type": "application/json;charset=utf-8"
-}
 
 class UdemyScraper:
     def __init__(self, domain = 0):
@@ -29,9 +22,9 @@ class UdemyScraper:
             # self.scraper = cfscrape.create_scraper(sess=self.scraper)
             self.getUdemyCouponURLs()
 
-    def checkCouponValidForUser(self, client_id = CLIENT_ID, client_secret = CLIENT_SECRET):
+    def checkCouponValidForUser(self, client_id = "", client_secret = ""):
         checkerSession = requests.session()
-        checkerSession.headers = AUTH_HEADER
+        # checkerSession.headers = AUTH_HEADER
         # Not working as expected
         for coupon in list(map(lambda x: x['Coupon URL'],self.couponURLs)):
             response = checkerSession.get(coupon)
