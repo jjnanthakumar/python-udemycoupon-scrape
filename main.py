@@ -5,6 +5,7 @@ import pandas as pd
 import requests
 from collections import OrderedDict
 
+__author__ = ['jjnanthakumar477@gmail.com','nanthaui@outlook.com', 'jjnanthakumar17@gmail.com','nanthakumar.j@ubtiinc.com']
 SCRAPING_URLS = ["https://techietweets.com/category/100-free-courses/",
                  "https://udemycoupon.learnviral.com/coupon-category/free100-discount/"]
 
