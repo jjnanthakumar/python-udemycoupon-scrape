@@ -9,6 +9,8 @@ __author__ = ['jjnanthakumar477@gmail.com','nanthaui@outlook.com', 'jjnanthakuma
 SCRAPING_URLS = ["https://techietweets.com/category/100-free-courses/",
                  "https://udemycoupon.learnviral.com/coupon-category/free100-discount/"]
 
+# There is some problem in domain 2 (learnviral.com) there is cloud flare ddos protection
+
 
 class UdemyScraper:
     def __init__(self, domain = 0):
@@ -33,9 +35,7 @@ class UdemyScraper:
             print(soup.find('div',{'class':'price-text--container--Ws-fP udlite-clp-price-text'}))
             break
 
-
-
-    def getUdemyCourseURLs(self, pages=3):
+    def getUdemyCourseURLs(self, pages = 1):
         for i in range(1, pages+1):
             pageURL = f'{self.url}'
             if i > 1:
@@ -86,7 +86,8 @@ class UdemyScraper:
                 currentDate = datetime.utcnow().date()
                 couponUrl = soup.find(
                     'a', text=re.compile(r'.*ENROLL.*')).get('href')
-                self.couponURLs.append({'Coupon URL': couponUrl, 'isValid': (
+                courseName = '-'.join(soup.find('div',{'class': 'title_single_area mb15'}).h1.text.split('-')[1:])
+                self.couponURLs.append({'Course Name': courseName,'Coupon URL': couponUrl, 'isValid': (
                     currentDate-couponPostedDate).days < 2})
         self.saveCouponsasExcel()
         # self.checkCouponValidForUser()
@@ -98,8 +99,8 @@ class UdemyScraper:
         parts[1] = parts[1].zfill(3)
         return ' '.join(parts)
 
-    def saveCouponsasExcel(self):
-        filtered_data = list(filter(lambda x: x['isValid'], self.couponURLs))
+    def saveCouponsasExcel(self, valid = True):
+        filtered_data = list(filter(lambda x: x['isValid'] or valid, self.couponURLs))
         df = pd.DataFrame(filtered_data)
         df.to_excel('CouponsData.xlsx', 'coupons', index=False)
         print('saved')
