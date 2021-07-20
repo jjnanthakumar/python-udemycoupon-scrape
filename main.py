@@ -35,7 +35,7 @@ class UdemyScraper:
             print(soup.find('div',{'class':'price-text--container--Ws-fP udlite-clp-price-text'}))
             break
 
-    def getUdemyCourseURLs(self, pages = 1):
+    def getUdemyCourseURLs(self, pages = 5):
         for i in range(1, pages+1):
             pageURL = f'{self.url}'
             if i > 1:
@@ -84,8 +84,12 @@ class UdemyScraper:
                 couponPostedDate = datetime.strptime(
                     formatted_date, "%B %d, %Y").date()
                 currentDate = datetime.utcnow().date()
-                couponUrl = soup.find(
-                    'a', text=re.compile(r'.*ENROLL.*')).get('href')
+                # couponUrl = soup.find(
+                    # 'a', text=re.compile(r'.*ENROLL.*')).get('href')
+                for s in soup.find_all('a', attrs={'href': re.compile(r'https://www.udemy.com/course/.*')}):
+                    if s.text.strip()=="ENROLL NOW":
+                        couponUrl = s.get('href')
+                        break
                 courseName = '-'.join(soup.find('div',{'class': 'title_single_area mb15'}).h1.text.split('-')[1:])
                 self.couponURLs.append({'Course Name': courseName,'Coupon URL': couponUrl, 'isValid': (
                     currentDate-couponPostedDate).days < 2})
